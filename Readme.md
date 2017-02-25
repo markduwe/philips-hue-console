@@ -1,5 +1,7 @@
 # Philips Hue Console
 
+Note: this is very basic and has almost no error-handling capabilities.
+
 ![Step 1](img/step1.png "Step 1")
 
 ![Step 2](img/step2.png "Step 2")
