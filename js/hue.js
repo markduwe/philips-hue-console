@@ -48,7 +48,7 @@ $(function() {
 			e.preventDefault();
 			$('#hue').hide();
 			$('#edit').show();
-			editBridge()();
+			editBridge();
 			editRooms();
 			editLights();
 			editSensors();
@@ -533,7 +533,7 @@ function editBridge() {
 			    data: '{"name": "'+params.newValue+'"}'
 			});
 		}).done(function(){
-			editBridge()();
+			editBridge();
 		});
 	});
 }
