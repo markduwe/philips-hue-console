@@ -150,12 +150,17 @@ function updateDateTime() {
 // get bridge
 function bridge() {
 	$.getJSON(config, function(data){
-		stuff = '';
-		stuff += '<div class="list-group">';
-		stuff += '<div class="list-group-item list-group-item-info">';
-		stuff += '<button type="button" class="btn btn-default" data-group="Group0" id="allLights"><i class="hue-'+data.modelid+'"></i>&nbsp;';
+		stuff = '<div class="panel panel-default">';
+		stuff += '<div class="panel-heading">';
 		stuff += data.name;
-		stuff += '</button></div>';
+		stuff += '<div class="pull-right">';
+		stuff += '<div class="btn-group">';
+		stuff += '<button type="button" class="btn btn-xs btn-default" data-group="Group0" id="allLights">&nbsp;<i class="hue-'+data.modelid+'"></i>&nbsp;</button>';
+		stuff += '</div>';
+		stuff += '</div>';
+		stuff += '</div>';
+		stuff += '<div class="panel-body">';
+		stuff += '<div class="list-group">';
 		if(data.swupdate.updatestate == 0){
 			stuff += '<button class="list-group-item" id="update">';
 			stuff += '<i class="mdi mdi-update"></i>&nbsp;';
@@ -202,6 +207,7 @@ function bridge() {
 		stuff += data.timezone;
 		stuff += '</div>';
 		stuff += '</div>';
+		stuff += '</div>';
 		$('#bridge').html(stuff);
 		$('#update').on('click', function(){
 			$.ajax({
@@ -217,154 +223,83 @@ function bridge() {
 	});
 }
 
-//get sensors
-function sensors() {
-	$.getJSON(allSensors, function(data){
-		var sensor = '<div class="list-group">';
-		$.each(data, function(i,a) {
-			var button = a.state.buttonevent;
-			var motion = a.state.status;
-			var temp = parseFloat(a.state.temperature) / 100;
-			switch (button) {
-				case 1002:
-				motion = '<i class="mdi mdi-window-minimize"></i>&nbsp;';
-				break;
-				case 2002:
-				motion = '<i class="hue-up"></i>&nbsp;';
-				break;
-				case 2003:
-				motion = '<i class="hue-up"></i>&nbsp;';
-				break;
-				case 3002:
-				motion = '<i class="hue-down"></i>&nbsp;';
-				break;
-				case 3003:
-				motion = '<i class="hue-down"></i>&nbsp;';
-				break;
-				case 4002:
-				motion = '<i class="hue-circle-o"></i>&nbsp;';
-				break;
-				case 34:
-				button = '<i class="mdi mdi-numeric-1-box"></i>&nbsp;';
-				break;
-				case 16:
-				button = '<i class="mdi mdi-numeric-2-box"></i>&nbsp;';
-				break;
-				case 17:
-				button = '<i class="mdi mdi-numeric-3-box"></i>&nbsp;';
-				break;
-				case 18:
-				button = '<i class="mdi mdi-numeric-4-box"></i>&nbsp;';
-				break;
-			}
-			switch (motion) {
-				case 0:
-				motion = '<i class="mdi mdi-do-not-disturb"></i>&nbsp;';
-				break;
-				case 1:
-				motion = '<i class="mdi mdi-run-fast"></i>&nbsp;';
-				break;
-				case 2:
-				motion = '<i class="mdi mdi-run-fast"></i>&nbsp;';
-				break;
-			}
-				if(exists(a.state.lastupdated)){
-					if(exists(temp)){
-						sensor += '<div class="list-group-item list-group-item-info '+a.modelid+' '+a.type+'" sensor'+i+'><i class="hue-'+a.modelid+'"></i> '+a.name + '</div><div class="list-group-item '+a.modelid+' '+a.type+' sensor'+i+'"><i class="mdi mdi-thermometer"></i>&nbsp;'+temp.toFixed(2)+'<i class="mdi mdi-temperature-celsius"></i></div>';
-					} else {
-						if(exists(motion)) {
-							sensor += '<div class="list-group-item list-group-item-info '+a.modelid+' '+a.type+'" sensor'+i+'><i class="hue-'+a.modelid+'"></i>&nbsp;'+a.name + '</div><div class="list-group-item '+a.modelid+' '+a.type+' sensor'+i+'">'+motion+' '+moment(a.state.lastupdated).fromNow()+'</div>';
-						} else {
-							sensor += '<div class="list-group-item list-group-item-info '+a.modelid+' '+a.type+'"><i class="hue-'+a.modelid+'"></i>&nbsp;'+a.name + '</div><div class="list-group-item '+a.modelid+' '+a.type+' sensor'+i+'">'+button+' '+moment(a.state.lastupdated).fromNow()+'</div>';
-						}
-					}
-				} else {
-					sensor += '<div class="list-group-item list-group-item-info '+a.modelid+' '+a.type+'"><i class="hue-'+a.modelid+'"></i>&nbsp;'+a.name + '</div><div class="list-group-item '+a.modelid+' '+a.type+' '+i+'">'+button+'</div>';
-				}
-		});
-		sensor += '<div>';
-		$('#sensors').html(sensor);
-	});
-}
-
-// get scenes
-function scenes() {
-	$.getJSON(allScenes, function(data){
-		var scene = '';
-	});
-}
-
 // populate all rooms
 function allRooms() {
 	$.getJSON(allGroups, function(data){
 		var hue = '';
 		$.each(data, function(i,a) {
 			hue += '<div class="col-sm-12 col-md-12 col-lg-4" data-group="'+i+'">';
-			hue += '<div class="list-group">';
-			hue += '<div class="list-group-item list-group-item-info" data-group="'+i+'" data-room="Group'+i+'">';
-			hue += '<div class="btn-group" role="group"><button class="btn btn-default roomController" data-room="'+i+'">';
+			hue += '<div class="panel panel-default">';
+			hue += '<div class="panel-heading" data-group="'+i+'" data-room="Group'+i+'">';
+			hue += ' '+a.name;
+			hue += '<div class="pull-right">';
+			hue += '<button class="btn btn-xs btn-default roomController" data-room="'+i+'">';
+
 			var roomType = a.class;
 			switch (roomType) {
 				case 'Living room':
-					hue += '<i class="hue-living"></i>&nbsp;';
+					hue += '&nbsp;<i class="hue-living"></i>&nbsp;';
 					break;
 				case 'Kitchen':
-					hue += '<i class="hue-kitchen"></i>&nbsp;';
+					hue += '&nbsp;<i class="hue-kitchen"></i>&nbsp;';
 					break;
 				case 'Dining':
-					hue += '<i class="hue-dining"></i>&nbsp;';
+					hue += '&nbsp;<i class="hue-dining"></i>&nbsp;';
 					break;
 				case 'Bedroom':
-					hue += '<i class="hue-bedroom"></i>&nbsp;';
+					hue += '&nbsp;<i class="hue-bedroom"></i>&nbsp;';
 					break;
 				case 'Kids bedroom':
-					hue += '<i class="kids_bedroom"></i>&nbsp;';
+					hue += '&nbsp;<i class="kids_bedroom"></i>&nbsp;';
 					break;
 				case 'Bathroom':
-					hue += '<i class="hue-bathroom"></i>&nbsp;';
+					hue += '&nbsp;<i class="hue-bathroom"></i>&nbsp;';
 					break;
 				case 'Nursery':
-					hue += '<i class="hue-nursery"></i>&nbsp;';
+					hue += '&nbsp;<i class="hue-nursery"></i>&nbsp;';
 					break;
 				case 'Recreation':
-					hue += '<i class="hue-recreation"></i>&nbsp;';
+					hue += '&nbsp;<i class="hue-recreation"></i>&nbsp;';
 					break;
 				case 'Office':
-					hue += '<i class="hue-office"></i>&nbsp;';
+					hue += '&nbsp;<i class="hue-office"></i>&nbsp;';
 					break;
 				case 'Gym':
-					hue += '<i class="hue-gym"></i>&nbsp;';
+					hue += '&nbsp;<i class="hue-gym"></i>&nbsp;';
 					break;
 				case 'Hallway':
-					hue += '<i class="hue-hallway"></i>&nbsp;';
+					hue += '&nbsp;<i class="hue-hallway"></i>&nbsp;';
 					break;
 				case 'Toilet':
-					hue += '<i class="hue-toilet"></i>&nbsp;';
+					hue += '&nbsp;<i class="hue-toilet"></i>&nbsp;';
 					break;
 				case 'Front door':
-					hue += '<i class="hue-frontdoor"></i>&nbsp;';
+					hue += '&nbsp;<i class="hue-frontdoor"></i>&nbsp;';
 					break;
 				case 'Garage':
-					hue += '<i class="hue-garage"></i>&nbsp;';
+					hue += '&nbsp;<i class="hue-garage"></i>&nbsp;';
 					break;
 				case 'Terrace':
-					hue += '<i class="hue-terrace"></i>&nbsp;';
+					hue += '&nbsp;<i class="hue-terrace"></i>&nbsp;';
 					break;
 				case 'Garden':
-					hue += '<i class="hue-garden"></i>&nbsp;';
+					hue += '&nbsp;<i class="hue-garden"></i>&nbsp;';
 					break;
 				case 'Driveway':
-					hue += '<i class="hue-driveway"></i>&nbsp;';
+					hue += '&nbsp;<i class="hue-driveway"></i>&nbsp;';
 					break;
 				case 'Carport':
-					hue += '<i class="hue-carport"></i>&nbsp;';
+					hue += '&nbsp;<i class="hue-carport"></i>&nbsp;';
 					break;
 				case 'Other':
-					hue += '<i class="mhue-other"></i>&nbsp;';
+					hue += '&nbsp;<i class="mhue-other"></i>&nbsp;';
 					break;
 			}
-			hue += ' '+a.name+'</button></div>';
+			hue += '</button>';
 			hue += '</div>';
+			hue += '</div>';
+			hue += '<div class="panel-body">';
+			hue += '<div class="list-group">';
 			$.each(a.lights, function(i,b) {
 				hue += '<div class="list-group-item lamp" data-lamp="'+b+'" data-light="Light'+b+'">';
 				$.getJSON(allLights+b, function(lamp){
@@ -375,6 +310,8 @@ function allRooms() {
 				});
 				hue += '</div>';
 			});
+			hue += '</div>';
+			hue += '</div>';
 			hue += '</div>';
 			hue += '</div>';
 		});
@@ -419,6 +356,158 @@ function updateEverything() {
 		});
 	});
 	sensors();
+}
+
+//get sensors
+function sensors() {
+	$.getJSON(allSensors, function(data){
+		var sensor = '<div class="panel panel-default">';
+		sensor += '<div class="panel-heading">';
+		sensor += 'Sensors/Switches';
+		sensor += '</div>';
+		sensor += '<div class="panel-body">';
+		sensor += '<div class="list-group">';
+		$.each(data, function(i,a) {
+			var daylight = a.state.daylight,
+				button = a.state.buttonevent,
+				motion = a.state.status,
+				movement = a.state.presence,
+				tholddark = a.config.tholddark,
+				tholdoffset = a.config.tholdoffset,
+				lightlevel = a.state.lightlevel,
+				temp = parseFloat(a.state.temperature) / 100;
+			if(motion == true && a.type == 'HA_GEOFENCE') {
+				sensor += '<div class="list-group-item '+a.modelid+' sensor'+i+'">';
+				sensor += '<i class="mdi mdi-run-fast"></i> '+moment(a.state.lastupdated).fromNow();
+				sensor += '</div>';
+			}
+			if(motion == false && a.type == 'HA_GEOFENCE') {
+				sensor += '<div class="list-group-item '+a.modelid+' sensor'+i+'">';
+				sensor += '<i class="mdi mdi-do-not-disturb"></i> '+moment(a.state.lastupdated).fromNow();
+				sensor += '</div>';
+			}
+			if(movement == true && a.type == 'ZLLPresence') {
+				sensor += '<div class="list-group-item '+a.modelid+' sensor'+i+'">';
+				sensor += '<i class="mdi mdi-run-fast"></i> '+moment(a.state.lastupdated).fromNow();
+				sensor += '</div>';
+			}
+			if(movement == false && a.type == 'ZLLPresence') {
+				sensor += '<div class="list-group-item '+a.modelid+' sensor'+i+'">';
+				sensor += '<i class="mdi mdi-do-not-disturb"></i> '+moment(a.state.lastupdated).fromNow();
+				sensor += '</div>';
+			}
+			sensor += '<div class="list-group-item list-group-item-info '+a.modelid+' '+a.type+'" sensor'+i+'>';
+			sensor += '<i class="hue-'+a.modelid+'"></i> ';
+			sensor += a.name;
+			sensor += '</div>';
+			if(exists(daylight)){
+				sensor += '<div class="list-group-item '+a.modelid+' sensor'+i+'">';
+				switch (daylight) {
+					case true:
+					sensor += '<i class="mdi mdi-weather-sunny"></i> Day';
+					break;
+					case false:
+					sensor += '<i class="mdi mdi-weather-night"></i> Night';
+					break;
+				}
+				sensor += '</div>';
+			}
+			if(exists(button)) {
+				sensor += '<div class="list-group-item '+a.modelid+' sensor'+i+'">';
+				switch (button) {
+					case 1000:
+					sensor += '<i class="mdi mdi-window-minimize"></i>&nbsp;';
+					break;
+					case 1001:
+					sensor += '<i class="mdi mdi-window-minimize"></i>&nbsp;';
+					break;
+					case 1002:
+					sensor += '<i class="mdi mdi-window-minimize"></i>&nbsp;';
+					break;
+					case 1003:
+					sensor += '<i class="mdi mdi-window-minimize"></i>&nbsp;';
+					break;
+					case 2000:
+					sensor += '<i class="hue-up"></i>&nbsp;';
+					break;
+					case 2001:
+					sensor += '<i class="hue-up"></i>&nbsp;';
+					break;
+					case 2002:
+					sensor += '<i class="hue-up"></i>&nbsp;';
+					break;
+					case 2003:
+					sensor += '<i class="hue-up"></i>&nbsp;';
+					break;
+					case 3000:
+					sensor += '<i class="hue-down"></i>&nbsp;';
+					break;
+					case 3001:
+					sensor += '<i class="hue-down"></i>&nbsp;';
+					break;
+					case 3002:
+					sensor += '<i class="hue-down"></i>&nbsp;';
+					break;
+					case 3003:
+					sensor += '<i class="hue-down"></i>&nbsp;';
+					break;
+					case 4000:
+					sensor += '<i class="hue-circle-o"></i>&nbsp;';
+					break;
+					case 4001:
+					sensor += '<i class="hue-circle-o"></i>&nbsp;';
+					break;
+					case 4002:
+					sensor += '<i class="hue-circle-o"></i>&nbsp;';
+					break;
+					case 4003:
+					sensor += '<i class="hue-circle-o"></i>&nbsp;';
+					break;
+					case 34:
+					sensor += '<i class="mdi mdi-numeric-1-box"></i>&nbsp;';
+					break;
+					case 16:
+					sensor += '<i class="mdi mdi-numeric-2-box"></i>&nbsp;';
+					break;
+					case 17:
+					sensor += '<i class="mdi mdi-numeric-3-box"></i>&nbsp;';
+					break;
+					case 18:
+					sensor += '<i class="mdi mdi-numeric-4-box"></i>&nbsp;';
+					break;
+				}
+				sensor += moment(a.state.lastupdated).fromNow();
+				sensor += '</div>';
+			}
+			if(exists(temp)){
+				sensor += '<div class="list-group-item '+a.modelid+' sensor'+i+'">';
+				sensor += '<i class="mdi mdi-thermometer"></i>&nbsp;';
+				sensor += temp.toFixed(2)+'&deg;C';
+				sensor += '</div>';
+			}
+			if(exists(lightlevel)) {
+				sensor += '<div class="list-group-item '+a.modelid+' sensor'+i+'">';
+				if(lightlevel > tholdoffset){
+					sensor += '<i class="mdi mdi-weather-sunny"></i> Sufficient Daylight';
+				}
+				if(lightlevel < tholdoffset){
+					sensor += '<i class="mdi mdi-weather-night"></i> Light Will Activate';
+				}
+				sensor += '</div>';
+			}
+		});
+		sensor += '</div>';
+		sensor += '</div>';
+		sensor += '</div>';
+		$('#sensors').html(sensor);
+	});
+}
+
+// get scenes
+function scenes() {
+	$.getJSON(allScenes, function(data){
+		var scene = '';
+	});
 }
 
 // turn all lights on/off
@@ -516,14 +605,16 @@ function getColor() {
 
 function editBridge() {
 	$.getJSON(config, function(data){
-		stuff = '';
-		stuff += '<div class="list-group">';
-		stuff += '<div class="list-group-item list-group-item-info">';
-		stuff += 'Bridge';
+		var stuff = '<div class="panel panel-default">';
+		stuff += '<div class="panel-heading">';
+		stuff += 'Bridge <div class="pull-right"><small>(Bridge ID: '+data.bridgeid+')</small></div>';
 		stuff += '</div>';
+		stuff += '<div class="panel-body">';
+		stuff += '<div class="list-group">';
 		stuff += '<div class="list-group-item">';
-		stuff += '<i class="hue-'+data.modelid+'"></i> ';
+		stuff += '<i class="hue-'+data.modelid+'"></i>&nbsp;';
 		stuff += '<a href="#" class="bridge" data-type="text" data-pk="1" data-title="Enter New Bridge Name">'+data.name+'</a>';
+		stuff += '</div>';
 		stuff += '</div>';
 		stuff += '</div>';
 		$('#config2').html(stuff);
@@ -545,75 +636,78 @@ function editBridge() {
 
 function editRooms() {
 	$.getJSON(allGroups, function(data){
-		var room = '<div class="list-group">';
-		room += '<div class="list-group-item list-group-item-info">';
+		var room = '<div class="panel panel-default">';
+		room += '<div class="panel-heading">';
 		room += 'Rooms';
 		room += '</div>';
+		room += '<div class="panel-body">';
+		room += '<div class="list-group">';
 		$.each(data, function(i,a) {
 			room += '<div class="list-group-item">';
 			var roomType = a.class;
 			switch (roomType) {
 				case 'Living room':
-					room += '<i class="hue-living"></i>';
+					room += '<i class="hue-living"></i>&nbsp;';
 					break;
 				case 'Kitchen':
-					room += '<i class="hue-kitchen"></i>';
+					room += '<i class="hue-kitchen"></i>&nbsp;';
 					break;
 				case 'Dining':
-					room += '<i class="hue-dining"></i>';
+					room += '<i class="hue-dining"></i>&nbsp;';
 					break;
 				case 'Bedroom':
-					room += '<i class="hue-bedroom"></i>';
+					room += '<i class="hue-bedroom"></i>&nbsp;';
 					break;
 				case 'Kids bedroom':
-					room += '<i class="kids_bedroom"></i>';
+					room += '<i class="kids_bedroom"></i>&nbsp;';
 					break;
 				case 'Bathroom':
-					room += '<i class="hue-bathroom"></i>';
+					room += '<i class="hue-bathroom"></i>&nbsp;';
 					break;
 				case 'Nursery':
-					room += '<i class="hue-nursery"></i>';
+					room += '<i class="hue-nursery"></i>&nbsp;';
 					break;
 				case 'Recreation':
-					room += '<i class="hue-recreation"></i>';
+					room += '<i class="hue-recreation"></i>&nbsp;';
 					break;
 				case 'Office':
-					room += '<i class="hue-office"></i>';
+					room += '<i class="hue-office"></i>&nbsp;';
 					break;
 				case 'Gym':
-					room += '<i class="hue-gym"></i>';
+					room += '<i class="hue-gym"></i>&nbsp;';
 					break;
 				case 'Hallway':
-					room += '<i class="hue-hallway"></i>';
+					room += '<i class="hue-hallway"></i>&nbsp;';
 					break;
 				case 'Toilet':
-					room += '<i class="hue-toilet"></i>';
+					room += '<i class="hue-toilet"></i>&nbsp;';
 					break;
 				case 'Front door':
-					room += '<i class="hue-frontdoor"></i>';
+					room += '<i class="hue-frontdoor"></i>&nbsp;';
 					break;
 				case 'Garage':
-					room += '<i class="hue-garage"></i>';
+					room += '<i class="hue-garage"></i>&nbsp;';
 					break;
 				case 'Terrace':
-					room += '<i class="hue-terrace"></i>';
+					room += '<i class="hue-terrace"></i>&nbsp;';
 					break;
 				case 'Garden':
-					room += '<i class="hue-garden"></i>';
+					room += '<i class="hue-garden"></i>&nbsp;';
 					break;
 				case 'Driveway':
-					room += '<i class="hue-driveway"></i>';
+					room += '<i class="hue-driveway"></i>&nbsp;';
 					break;
 				case 'Carport':
-					room += '<i class="hue-carport"></i>';
+					room += '<i class="hue-carport"></i>&nbsp;';
 					break;
 				case 'Other':
 					room += '<i class="mhue-other"></i>';
 					break;
 			}
-			room += ' <a href="#" class="room" data-light="'+i+'" data-type="text" data-pk="1" data-title="Enter New Room Name">'+a.name+'</a>';
+			room += ' <a href="#" class="room" data-light="'+i+'" data-type="text" data-pk="1" data-title="Enter New Room Name">'+a.name+'</a> <div class="pull-right"><small>(Room ID: '+i+')</small></div>';
 			room += '</div>';
 		});
+		room += '</div>';
 		room += '</div>';
 		$('#rooms').html(room);
 		$('.room').editable({
@@ -635,14 +729,16 @@ function editRooms() {
 
 function editLights() {
 	$.getJSON(allLights, function(data){
-		var light = '<div class="list-group">';
-		light += '<div class="list-group-item list-group-item-info">';
+		var light = '<div class="panel panel-default">';
+		light += '<div class="panel-heading">';
 		light += 'Lights';
 		light += '</div>';
+		light += '<div class="panel-body">';
+		light += '<div class="list-group">';
 		$.each(data, function(i,a) {
 			light += '<div class="list-group-item">';
 			light += '<i class="hue-'+a.modelid+'"></i> ';
-			light += ' <a href="#" class="light" data-lamp="'+i+'" data-type="text" data-pk="1" data-title="Enter New Light Name">'+a.name+'</a>';
+			light += ' <a href="#" class="light" data-lamp="'+i+'" data-type="text" data-pk="1" data-title="Enter New Light Name">'+a.name+'</a> <div class="pull-right"><small>(Lamp ID: '+i+')</small></div>';
 			light += '</div>';
 		});
 		light += '</div>';
@@ -666,14 +762,16 @@ function editLights() {
 
 function editSensors() {
 	$.getJSON(allSensors, function(data){
-		var sensor = '<div class="list-group">';
-		sensor += '<div class="list-group-item list-group-item-info">';
+		var sensor = '<div class="panel panel-default">';
+		sensor += '<div class="panel-heading">';
 		sensor += 'Sensors/Switches';
 		sensor += '</div>';
+		sensor += '<div class="panel-body">';
+		sensor += '<div class="list-group">';
 		$.each(data, function(i,a) {
 			sensor += '<div class="list-group-item '+a.modelid+' '+a.type+' type">';
 			sensor += '<i class="hue-'+a.modelid+'"></i> ';
-			sensor += ' <a href="#" class="sensor" data-sensor="'+i+'" data-type="text" data-pk="1" data-title="Enter New sensor Name">'+a.name+'</a>';
+			sensor += ' <a href="#" class="sensor" data-sensor="'+i+'" data-type="text" data-pk="1" data-title="Enter New sensor Name">'+a.name+'</a> <div class="pull-right"><small>(Sensor ID: '+i+')</small></div>';
 			sensor += '</div>';
 		});
 		sensor += '</div>';
