@@ -8,8 +8,7 @@ body {
 	width: 100%;
 }
 [class*='col'] div.list-group {
-	padding: 1em;
-	background: #fff;
+	margin: 0;
 }
 .stronger {
 	font-size: 120%;
@@ -31,13 +30,15 @@ body {
 .btn-group > button.btn.lightController {
 	width: calc(100% - 42px);
 }
-#sensors .list-group-item, #sensors .list-group-item.list-group-item-info.PHA_STATE, #sensors .list-group-item.SML001.ZLLPresence, #sensors .list-group-item.SML001.ZLLLightLevel, #sensors .list-group-item.CLIPGenericStatus, .PHDL00, .HA_GEOFENCE, .CLIPGenericStatus, .ZLLLightLevel.type, .ZLLPresence.type {
+.PHWA01, .ZLLPresence, .ZLLLightLevel, .CLIPGenericStatus, .HA_GEOFENCE {
 	display: none;
-}
-#sensors .list-group-item.RWL021, #sensors .list-group-item.ZGPSWITCH, #sensors .list-group-item.PHA_STATE, #sensors .list-group-item.SML001 {
-	display: block;
 }
 .mdi-window-minimize {
 	transform: rotate(90deg);
 	display: inline-block;
+}
+.panel-default > .panel-heading {
+	background-color: #222;
+	color: #efefef;
+	border-color: #222 !important;
 }

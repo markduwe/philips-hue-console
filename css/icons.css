@@ -300,7 +300,13 @@
 .hue-RWL021:before {
   content: "\e943";
 }
+.hue-PHWA01:before {
+  content: "\e943";
+}
 .hue-SML001:before {
+  content: "\e944";
+}
+.hue-PHA_STATE:before {
   content: "\e944";
 }
 .hue-ZGPSWITCH:before {
