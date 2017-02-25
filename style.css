@@ -1,0 +1,43 @@
+body {
+	padding-top: 60px;
+	background: #90a4ae;
+}
+.container {
+	margin-top: 15px;
+	margin-bottom: 15px;
+	width: 100%;
+}
+[class*='col'] div.list-group {
+	padding: 1em;
+	background: #fff;
+}
+.stronger {
+	font-size: 120%;
+}
+.list-group-item img {
+	max-width: 16px;
+}
+.list-group-item.partactive, .list-group-item.partactive:focus, .list-group-item.partactive:hover {
+	background-image: -webkit-linear-gradient(top, #c4e3f3 0, #2b669a 100%);
+	background-image: -o-linear-gradient(top, #c4e3f3 0, #2b669a 100%);
+	background-image: -webkit-gradient(linear, center top, center bottom, from(#c4e3f3), to(#2b669a));
+	background-image: linear-gradient(to bottom, #c4e3f3 0, #2b669a 100%);
+	filter: progid: DXImageTransform.Microsoft.gradient(startColorstr='#c4e3f3b7', endColorstr='#ff2b669a', GradientType=0);
+	color: #fff;
+}
+.list-group-item > .btn, .btn-group, .btn-group > button.btn.roomController {
+	width: 100%;
+}
+.btn-group > button.btn.lightController {
+	width: calc(100% - 42px);
+}
+#sensors .list-group-item, #sensors .list-group-item.list-group-item-info.PHA_STATE, #sensors .list-group-item.SML001.ZLLPresence, #sensors .list-group-item.SML001.ZLLLightLevel, #sensors .list-group-item.CLIPGenericStatus, .PHDL00, .HA_GEOFENCE, .CLIPGenericStatus, .ZLLLightLevel.type, .ZLLPresence.type {
+	display: none;
+}
+#sensors .list-group-item.RWL021, #sensors .list-group-item.ZGPSWITCH, #sensors .list-group-item.PHA_STATE, #sensors .list-group-item.SML001 {
+	display: block;
+}
+.mdi-window-minimize {
+	transform: rotate(90deg);
+	display: inline-block;
+}

@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+<link rel="icon" type="image/png" href="img/icon.png">
+<link rel="mask-icon" href="img/icon.svg" color="black">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="img/appicon.png" />
+<title>Hue</title>
+<link href="https://fonts.googleapis.com/css?family=Duru+Sans" rel="stylesheet">
+<link rel="stylesheet" href="css/bootstrap.min.css" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/MaterialDesign-Webfont/1.8.36/css/materialdesignicons.min.css" />
+<link rel="stylesheet" href="css/bootstrap.colorpickersliders.min.css" />
+<link href="../css/bootstrap-editable.css" rel="stylesheet"/>
+<link rel="stylesheet" href="css/icons.css" />
+<link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+<div class="container">
+
+	<nav class="navbar navbar-default navbar-inverse navbar-fixed-top">
+		<div class="container-fluid">
+			<div class="navbar-header">
+				<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+					<span class="sr-only">Toggle navigation</span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+				</button>
+				<a class="navbar-brand" href="#"><i class="hue-LCT001"></i></a>
+			</div>
+			<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+				<ul class="nav navbar-nav">
+					<li class="active userExists"><a href="#hue" id="goToHue">Hue Status</a></li>
+					<li class="userExists"><a href="#edit" id="editPage">Edit Hue</a></li>
+				</ul>
+				<ul class="nav navbar-nav navbar-right">
+					<li class="userCreate"><a href="#config" id="editPage"><i class="mdi mdi-settings"></i></a></li>
+				</ul>
+			</div>
+		</div>
+	</nav>
+
+	<div class="row" id="config"></div>
+
+	<div class="row" id="hue">
+
+		<div class="col-sm-12 col-md-4 col-lg-2" id="bridge"></div>
+
+		<div class="col-sm-12 col-md-4 col-lg-8">
+			<div class="row" id="groups"></div>
+		</div>
+
+		<div class="col-sm-12 col-md-4 col-lg-2" id="sensors"></div>
+
+	</div>
+
+	<div class="row" id="edit">
+
+		<div class="col-sm-12 col-md-4 col-lg-3" id="config2"></div>
+
+		<div class="col-sm-12 col-md-4 col-lg-3" id="rooms"></div>
+
+		<div class="col-sm-12 col-md-4 col-lg-3" id="lights"></div>
+
+		<div class="col-sm-12 col-md-4 col-lg-3" id="sensors2"></div>
+
+	</div>
+
+</div>
+
+<script src="http://code.jquery.com/jquery.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.17.1/moment.min.js"></script>
+<script src="js/color.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tinycolor/0.11.1/tinycolor.min.js"></script>
+<script src="js/bootstrap.colorpickersliders.min.js"></script>
+<script src="../js/bootstrap-editable.min.js"></script>
+<script src="js/hue.js"></script>
+</body>
+</html>
