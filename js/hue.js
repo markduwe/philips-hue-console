@@ -1,18 +1,16 @@
-var user		= localStorage.getItem('hueUser'),
-	hueip		= localStorage.getItem('hueIP'),
-	api			= hueip+'/api/',
+var api			= localStorage.getItem('hueIP')+'/api/',
 	upnp		= 'https://www.meethue.com/api/nupnp',
-	config		= hueip+'/api/'+user+'/config/',
-	groupZero	= hueip+'/api/'+user+'/groups/0/',
-	allGroups	= hueip+'/api/'+user+'/groups/',
-	allLights	= hueip+'/api/'+user+'/lights/',
-	allSensors	= hueip+'/api/'+user+'/sensors/',
-	allScenes	= hueip+'/api/'+user+'/scenes/',
-	begin		= hueip+'/api/';
+	config		= localStorage.getItem('hueIP')+'/api/'+localStorage.getItem('hueUser')+'/config/',
+	groupZero	= localStorage.getItem('hueIP')+'/api/'+localStorage.getItem('hueUser')+'/groups/0/',
+	allGroups	= localStorage.getItem('hueIP')+'/api/'+localStorage.getItem('hueUser')+'/groups/',
+	allLights	= localStorage.getItem('hueIP')+'/api/'+localStorage.getItem('hueUser')+'/lights/',
+	allSensors	= localStorage.getItem('hueIP')+'/api/'+localStorage.getItem('hueUser')+'/sensors/',
+	allScenes	= localStorage.getItem('hueIP')+'/api/'+localStorage.getItem('hueUser')+'/scenes/',
+	begin		= localStorage.getItem('hueIP')+'/api/';
 
 $(function() {
 
-	if(exists(user)){
+	if(exists(localStorage.getItem('hueUser'))){
 
 		$('#config').hide();
 
@@ -102,8 +100,8 @@ function configuration() {
 			    	type: 'POST',
 					url: api,
 					data: '{"devicetype": "hueApp#hueWebApp"}'
-				}).success(function(data){
-					if(exists(data[0].success.username)) {
+				}).done(function(data){
+					if(exists(data[0].success)) {
 						localStorage.setItem('hueUser', data[0].success.username);
 						started = '<div class="list-group-item active">'
 						started += '<h4 class="list-group-item-heading">3. User Created!</h4>';
@@ -121,14 +119,14 @@ function configuration() {
 							$('.userExists').show();
 							$('.userCreate').removeClass('active');
 						});
-					} else {
-						fail = '<div class="list-group-item active" id="fail">'
-						fail += '<h4 class="list-group-item-heading">Oops</h4>';
-						fail += '<p class="list-group-item-text">You\'re all set up.</p>';
-						fail += '<p class="list-group-item-text">Click the button below to go to your hue control panel.</p>';
+					}
+					if(exists(data[0].error)) {
+						fail = '<div class="list-group" id="fail">';
+						fail += '<div class="list-group-item active">'
+						fail += '<h3 class="list-group-item-heading">Oops</h3>';
+						fail += '<p class="list-group-item-text">'+data[0].error.description+', or you took too long.</p>';
+						fail += '<p class="list-group-item-text"><p class="list-group-item-text"><i class="hue-pushlink_bridgev2"></i> Press the link button on your bridge and click the button above within 30 seconds.</p></p>';
 						fail += '</div>';
-						fail += '<div class="list-group-item">';
-						fail += '<button class="btn btn-info" id="controlPanel">Control Panel</button>';
 						fail += '</div>';
 						$('#letsGo').append(fail);
 					}
