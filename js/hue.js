@@ -182,7 +182,7 @@ function bridge() {
 		stuff += '</div>';
 		stuff += '<div class="list-group-item">';
 		if(data.linkbutton == false){
-			stuff += '<i class="hue-pushlink_bridgev2"></i>&nbsp;';
+			stuff += '<i class="hue-pushlink_'+data.modelid+'"></i>&nbsp;';
 			stuff += 'Link button inactive';
 		} else {
 			stuff += '<i class="mdi mdi-adjust"></i>&nbsp;';
@@ -384,22 +384,12 @@ function sensors() {
 				tholdoffset = a.config.tholdoffset,
 				lightlevel = a.state.lightlevel,
 				temp = parseFloat(a.state.temperature) / 100;
-			if(motion == true && a.type == 'HA_GEOFENCE') {
+			if(a.state.presence == true) {
 				sensor += '<div class="list-group-item '+a.modelid+' sensor'+i+'">';
 				sensor += '<i class="mdi mdi-run-fast"></i> '+moment(a.state.lastupdated).fromNow();
 				sensor += '</div>';
 			}
-			if(motion == false && a.type == 'HA_GEOFENCE') {
-				sensor += '<div class="list-group-item '+a.modelid+' sensor'+i+'">';
-				sensor += '<i class="mdi mdi-do-not-disturb"></i> '+moment(a.state.lastupdated).fromNow();
-				sensor += '</div>';
-			}
-			if(movement == true && a.type == 'ZLLPresence') {
-				sensor += '<div class="list-group-item '+a.modelid+' sensor'+i+'">';
-				sensor += '<i class="mdi mdi-run-fast"></i> '+moment(a.state.lastupdated).fromNow();
-				sensor += '</div>';
-			}
-			if(movement == false && a.type == 'ZLLPresence') {
+			if(a.state.presence == false) {
 				sensor += '<div class="list-group-item '+a.modelid+' sensor'+i+'">';
 				sensor += '<i class="mdi mdi-do-not-disturb"></i> '+moment(a.state.lastupdated).fromNow();
 				sensor += '</div>';
@@ -501,7 +491,7 @@ function sensors() {
 			if(exists(a.state.lightlevel)) {
 				sensor += '<div class="list-group-item '+a.modelid+' sensor'+i+'">';
 				if(lightlevel > tholdoffset) {
-					sensor += '<i class="mdi mdi-weather-sunny"></i> Sufficient Daylight';
+					sensor += '<i class="mdi mdi-weather-sunny"></i> Sufficient light';
 				} else {
 					sensor += '<i class="mdi mdi-weather-night"></i> Light Will Activate';
 				}
