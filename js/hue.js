@@ -234,7 +234,6 @@ function allRooms() {
 			hue += ' '+a.name;
 			hue += '<div class="pull-right">';
 			hue += '<button class="btn btn-xs btn-default roomController" data-room="'+i+'">';
-
 			var roomType = a.class;
 			switch (roomType) {
 				case 'Living room':
@@ -304,8 +303,17 @@ function allRooms() {
 				hue += '<div class="list-group-item lamp" data-lamp="'+b+'" data-light="Light'+b+'">';
 				$.getJSON(allLights+b, function(lamp){
 					$('.list-group-item[data-lamp="'+b+'"]').html(
-						'<div class="btn-group" role="group"><button type="button" class="lightController btn btn-default" data-light="Light'+b+'" data-bulb="'+b+'">'+lamp.name+'</button><button class="btn btn-default colorShow" data-color="'+b+'" data-value="rgb('+cie_to_rgb(lamp.state.xy[0],lamp.state.xy[1])+')"><i class="hue-'+lamp.modelid+'"></i></button></div>'
+						'<div class="btn-group" role="group"><button type="button" class="lightController btn btn-default" data-light="Light'+b+'" data-bulb="'+b+'">'+lamp.name+'</button><button class="btn btn-default colorShow" data-color="'+b+'" data-value="rgb('+cie_to_rgb(lamp.state.xy[0],lamp.state.xy[1])+')"><i class="hue-'+lamp.modelid+'"></i></button><input type="text" class="span2" value="" data-slider-min="0" data-slider-max="255" data-slider-step="1" data-slider-value="'+lamp.state.bri+'" data-slider-orientation="horizontal" data-slider-selection="after" data-slider-tooltip="hide" data-bulb="'+b+'"></div>'
 					);
+					$('.span2').slider().on('slide', function(ev){
+						var bulb = $(this).data('bulb');
+						console.log(ev.value)
+						$.ajax({
+						    type: 'PUT',
+						    url: allLights+bulb+'/state',
+						    data: '{"bri": '+ev.value+'}'
+						});
+					});
 					lightXonoff();
 				});
 				hue += '</div>';
@@ -400,9 +408,9 @@ function sensors() {
 			sensor += '<i class="hue-'+a.modelid+'"></i> ';
 			sensor += a.name;
 			sensor += '</div>';
-			if(exists(daylight)){
+			if(a.state.daylight == true) {
 				sensor += '<div class="list-group-item '+a.modelid+' sensor'+i+'">';
-				switch (daylight) {
+				switch (a.state.daylight && a.modelid == 'PHDL00') {
 					case true:
 					sensor += '<i class="mdi mdi-weather-sunny"></i> Day';
 					break;
@@ -410,6 +418,11 @@ function sensors() {
 					sensor += '<i class="mdi mdi-weather-night"></i> Night';
 					break;
 				}
+				sensor += '</div>';
+			}
+			if(a.state.daylight == false && a.modelid == 'PHDL00') {
+				sensor += '<div class="list-group-item '+a.modelid+' sensor'+i+'">';
+				sensor += '<i class="mdi mdi-weather-night"></i> Night';
 				sensor += '</div>';
 			}
 			if(exists(button)) {
@@ -485,12 +498,11 @@ function sensors() {
 				sensor += temp.toFixed(2)+'&deg;C';
 				sensor += '</div>';
 			}
-			if(exists(lightlevel)) {
+			if(exists(a.state.lightlevel)) {
 				sensor += '<div class="list-group-item '+a.modelid+' sensor'+i+'">';
-				if(lightlevel > tholdoffset){
+				if(lightlevel > tholdoffset) {
 					sensor += '<i class="mdi mdi-weather-sunny"></i> Sufficient Daylight';
-				}
-				if(lightlevel < tholdoffset){
+				} else {
 					sensor += '<i class="mdi mdi-weather-night"></i> Light Will Activate';
 				}
 				sensor += '</div>';
@@ -570,7 +582,7 @@ function lightXonoff() {
 			    data: '{"on": true, "bri": 254}'
 			});
 		}
-	//updateEverything();
+	updateEverything();
 	});
 }
 
