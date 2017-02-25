@@ -12,6 +12,8 @@ $(function() {
 
 	if(exists(localStorage.getItem('hueUser'))){
 
+		$('#hue').show();
+
 		$('#config').hide();
 
 		setInterval(function(){
@@ -75,7 +77,7 @@ function configuration() {
 	conf += '<p class="list-group-item-text">Click the button below to discover your bridge</p>';
 	conf += '</div>';
 	conf += '<div class="list-group-item">';
-	conf += '<button class="btn btn-info" id="findBridge">Find Bridge</button>';
+	conf += '<button class="btn btn-info" id="findBridge"><i class="mdi mdi-wifi"></i> Find Bridge</button>';
 	conf += '</div>';
 	conf += '</div>';
 	conf += '</div>';
@@ -91,7 +93,7 @@ function configuration() {
 			discover += '<p class="list-group-item-text"><i class="hue-pushlink_bridgev2"></i> Press the link button on your bridge and click the button below within 30 seconds.</p>';
 			discover += '</div>';
 			discover += '<div class="list-group-item">';
-			discover += '<button class="btn btn-info" id="createUser">Create User</button>';
+			discover += '<button class="btn btn-info" id="createUser"><i class="mdi mdi-account-plus"></i> Create User</button>';
 			discover += '</div>';
 			$('#letsGo').append(discover);
 			$('#createUser').on('click', function(){
@@ -109,7 +111,7 @@ function configuration() {
 						started += '<p class="list-group-item-text">Click the button below to go to your hue control panel.</p>';
 						started += '</div>';
 						started += '<div class="list-group-item">';
-						started += '<button class="btn btn-info" id="controlPanel">Control Panel</button>';
+						started += '<button class="btn btn-info" id="controlPanel"><i class="hue-LCT001"></i> Control Panel</button>';
 						started += '</div>';
 						$('#fail').remove();
 						$('#letsGo').append(started);
@@ -118,6 +120,9 @@ function configuration() {
 							$('#hue').show();
 							$('.userExists').show();
 							$('.userCreate').removeClass('active');
+							bridge();
+							allRooms();
+							getColor();
 						});
 					}
 					if(exists(data[0].error)) {
